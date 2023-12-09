@@ -7,11 +7,12 @@ import {
   Burger,
   Group,
   MantineProvider,
+  Footer,
 } from "@mantine/core";
 import { ActionIcon, useMantineColorScheme } from "@mantine/core";
 import { IconMoon, IconSun } from "@tabler/icons-react";
 import React, { useState, useEffect, Fragment, Suspense, useRef } from "react";
-import { createStyles, useMantineTheme } from "@mantine/styles";
+import { ColorScheme, createStyles, useMantineTheme } from "@mantine/styles";
 import {
   Navigate,
   NavLink,
@@ -21,16 +22,20 @@ import {
 } from "react-router-dom";
 import Home from "./Home";
 import Settings from "./Settings";
+import { DeepPartial } from "@mantine/styles/lib/theme/types/DeepPartial";
+import Root from "./Root";
 
 function App() {
   const views = [
-    { path: "/", name: "Home", exact: true, component: Home },
+    { path: "/", name: "Root", exact: true, component: Root },
+    { path: "hom", name: "Home", component: Home },
     { path: "settings", name: "Settings", component: Settings },
   ];
 
   const defaultColorScheme = "dark";
   const [open, setOpen] = useState(false);
-  const [colorScheme, setColorScheme] = useState(defaultColorScheme);
+  const [colorScheme, setColorScheme] =
+    useState<DeepPartial<ColorScheme>>(defaultColorScheme);
 
   const toggleColorScheme = () => {
     setColorScheme(current => (current === "dark" ? "light" : "dark"));
@@ -79,6 +84,7 @@ function App() {
                 <NavLink
                   key={view.path}
                   to={view.path}
+                  end={view.exact}
                   className={({ isActive }) =>
                     classes.navLink +
                     " " +
@@ -117,6 +123,19 @@ function App() {
                 </div>
               </div>
             </Header>
+          }
+          footer={
+            <Footer
+              height={"fit-content"}
+              p="xs"
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Text>@takanome-dev</Text>
+            </Footer>
           }
           styles={theme => ({
             main: {
